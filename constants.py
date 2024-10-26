@@ -31,10 +31,13 @@ echo_green(run_length,"run_length")
 
 
 pool0 = "USDC/WETH-0.05"
-pool1 = "PEPE/USDC-1"
-pool2 = "WBTC/USDC-0.3"
+#pool1 = "USDC/WETH-0.3"
+pool1 = "WBTC/WETH-0.05"
+#pool3 = "WBTC/WETH-0.3"
 
-pools = [pool0, pool1, pool2]
+
+
+pools = [pool0, pool1]
 #pools=["USDC/WETH-0.05","USDC/WETH-0.3"]
 chain=Chain.ETHEREUM
 

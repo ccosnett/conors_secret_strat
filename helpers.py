@@ -1,5 +1,6 @@
 # gaia
 import pickle
+from agent import *
 from pyperclip import *
 from decimal import Decimal
 from typing import List, Optional
@@ -144,6 +145,9 @@ def echo_yellow(expr, label=None):
     else:
         print(col + expr + Style.RESET_ALL)
     return expr
+
+def yellow(strin_expr):
+    echo_yellow(eval(strin_expr), strin_expr)
 
 def cop(text):
     """

@@ -12,9 +12,9 @@ def removeETH(portfolio):
     return erc20_port
 
 
-def initial_agent_wealth(obs, initial_portfolio):
+def initial_agent_wealth(obs, agent):
         if obs.block == 20129224:
-            init_w = HODL_agent_wealth(obs, initial_portfolio)
+            init_w = tw(obs, agent)
             
             global welt
             welt = init_w
@@ -26,57 +26,12 @@ def initial_agent_wealth(obs, initial_portfolio):
         return init_w
 
 
-def current_agent_wealth(obs, portfolio):
-    #echo_green(portfolio,"c w p")
-    #dic = portfolio
-    #dic.pop('ETH', None)
-
-    #out1 = dic.items()
-    erc20_portfolio = removeETH(portfolio)
-    out1 = erc20_portfolio.items()
-    echo_green(out1,"2")
-    pool = obs.pools[0]
-    pool_tokens = obs.pool_tokens(pool=pool)
-        
-    wealth = Decimal(0)   
-    for token, quantity in out1:
-        wealth += quantity * obs.price(token=token, unit=pool_tokens[0], pool=pool)
-    return wealth
-
-
-# def current_wealth(obs, agent):
-#     """The agent wealth in units of asset y according to the UniswapV3 pool."""
-
+def current_agent_wealth(obs, agent):
+    return tw(obs, agent)
     
-#     out1 = agent.portolio().items()
-#     pool = obs.pools[0]
-#     pool_tokens = obs.pool_tokens(pool=pool)
-        
-#     wealth = Decimal(0)   
-#     for token, quantity in out1:
-#         wealth += quantity * obs.price(token=token, unit=pool_tokens[0], pool=pool)
-#     return wealth
-
-def HODL_agent_wealth(obs, initial_portfolio):
-    echo('1')
-        
-    erc20_portfolio = removeETH(initial_portfolio)
-    #echo_magenta(erc20_portfolio,"remov")
-
-    pool = obs.pools[0]
-    pool_tokens = obs.pool_tokens(pool=pool)
-
-    itemz = erc20_portfolio.items()
-    w = Decimal(0)
-    for token, quantity in itemz:
-#            echo_yellow([token, quantity],"token,quant")
-        w = w + quantity * obs.price(token=token, unit=pool_tokens[0], pool=pool)
-
-    out = w
-
-    return out#float(out) #initial_erc20_portfolio.items()
-
-
+def HODL_agent_wealth(obs, agent):
+    
+    return tw_p(obs, agent.initial_portfolio)
 
 def profit_n_loss(current_wealth, initial_wealth):
     out1 = current_wealth - initial_wealth
@@ -101,13 +56,64 @@ def HODL_profit_n_loss_percentage(HODL_current_wealth, initial_wealth):
 
 def weth_price(obs, pool):
     echo('weth_price')
-    out1 = obs.price('WETH','USDC','USDC/WETH-0.3')
+    out1 = obs.price('WETH','USDC','USDC/WETH-0.05')
     echo_cyan(out1, "obs.price('WETH','UDSC',"+pool+")")
     return out1
 
 def pric(obs):
     echo('pric')
     return weth_price(obs, obs.pools[0])
+
+
+def holdings(agent):
+    return agent.erc20_portfolio()
+
+def portfol(agent):
+    return agent.erc20_portfolio()
+
+
+def conversions(obs):
+    #pools =  obs.pools
+    d = {}
+    d["WBTC/WETH-0.05"] = obs.price('WBTC', 'WETH', "WBTC/WETH-0.05")
+    d["USDC/WETH-0.05"] = obs.price('USDC', 'WETH', 'USDC/WETH-0.05')
+    return d
+
+
+def total_wealth(portfolio, conversions):
+
+    echo_yellow(portfolio,'portfolio')
+    # Compute USDC per WETH
+    USDC_per_WETH = 1 / conversions['USDC/WETH-0.05']  # 1 / 0.000280
+    # USDC_per_WETH = 3571.4285714285716
+
+    # Compute USDC per WBTC
+    WETH_per_WBTC = conversions['WBTC/WETH-0.05']  # 18.3
+    USDC_per_WBTC = WETH_per_WBTC * USDC_per_WETH  # 18.3 * 3571.4285714285716
+
+    # Now compute total wealth
+    total_USDC = portfolio.get('USDC', 0)
+    total_USDC += portfolio.get('WETH', 0) * USDC_per_WETH
+    total_USDC += portfolio.get('WBTC', 0) * USDC_per_WBTC
+
+    print("Total wealth in USDC:", total_USDC)
+
+
+    #out1 = total_wealth(portfolio, conversions)
+    return total_USDC
+
+
+def tw(obs, agent):
+    portf = portfol(agent)
+    convers = conversions(obs)
+    return total_wealth(portf, convers)
+
+def tw_p(obs, p):
+    portf = p
+    convers = conversions(obs)
+    return total_wealth(portf, convers)
+
+
 
 
 

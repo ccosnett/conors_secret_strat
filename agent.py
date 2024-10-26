@@ -58,20 +58,25 @@ class UniswapV3PoolWealthAgent(UniswapV3Agent):
         """Initialize the agent."""
         super().__init__(name=name, initial_portfolio=initial_portfolio)
         self.initial_portfolio = initial_portfolio        
-        echo_cyan(self.initial_portfolio,"agents initial portfolio")
+        #echo_cyan(self.initial_portfolio,"agents initial portfolio")
         echo_cyan(name,"agents_name")
 
 
 
 
     def reward(self, obs):
-        echo(self.initial_portfolio,"initial_portfolio")
-        echo('here')
-        init_w = initial_agent_wealth(obs, self.initial_portfolio)
-        echo('b')
-        current_w_HODL = HODL_agent_wealth(obs, self.initial_portfolio)
-        echo('c')
-        current_w = current_agent_wealth(obs, self.erc20_portfolio())
+        agent = self
+        
+        
+        
+        init_w = initial_agent_wealth(obs, agent)
+        echo_yellow(init_w, 'init_w')
+
+        current_w_HODL = HODL_agent_wealth(obs, agent)
+        echo_yellow(current_w_HODL, 'current_w_HODL')
+        
+        current_w = current_agent_wealth(obs, agent)
+        echo_yellow(current_w,'current_w')
 
         PnL = profit_n_loss(current_w, init_w)
         PnL_HODL = HODL_profit_n_loss(current_w_HODL, init_w)
@@ -93,6 +98,11 @@ class UniswapV3PoolWealthAgent(UniswapV3Agent):
         sig(init_w,"initial_wealth",obs)
         sig(PnLP_HODL,"PnL Percentage HODL",obs)
         sig(PnL_HODL,"PnL HODL",obs)
+        port = agent.erc20_portfolio()
+        echo_yellow(port,'port')
+        echo_yellow(agent,'self')
+
+        current_w = tw(obs, agent)
         
         
         return  current_w #PnLP #obs.price(token="WETH",unit="USDC",pool="USDC/WETH-0.05")
