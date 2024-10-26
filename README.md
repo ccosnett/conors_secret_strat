@@ -2,7 +2,8 @@
 
 
 1. Go to main branch
-2:
+
+2. 
 ```
 python run_local.py 2>&1 | tee ./output.txt
 ```
