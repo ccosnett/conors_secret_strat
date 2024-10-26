@@ -27,7 +27,15 @@ echo_green(run_length,"run_length")
  """
 #echo_green(portfolio,"initial_portfolio")
 # pools=["USDC/WETH-0.05"]
-pools=["USDC/WETH-0.05","USDC/WETH-0.3"]
+
+
+
+pool0 = "USDC/WETH-0.05"
+pool1 = "PEPE/USDC-1"
+pool2 = "WBTC/USDC-0.3"
+
+pools = [pool0, pool1, pool2]
+#pools=["USDC/WETH-0.05","USDC/WETH-0.3"]
 chain=Chain.ETHEREUM
 
 backend_type="forked"

@@ -65,18 +65,12 @@ class UniswapV3PoolWealthAgent(UniswapV3Agent):
 
 
     def reward(self, obs):
-        """       if obs.block == 20129224:
-            init_w = hodl_agent_wealth(obs, self.initial_portfolio)
-            
-            global welt
-            welt = init_w
-            echo_magenta(welt, "global welt set")
-        else:
-            init_w = welt 
-            echo_magenta(init_w, "global welt set") """
-
+        echo(self.initial_portfolio,"initial_portfolio")
+        echo('here')
         init_w = initial_agent_wealth(obs, self.initial_portfolio)
+        echo('b')
         current_w_HODL = HODL_agent_wealth(obs, self.initial_portfolio)
+        echo('c')
         current_w = current_agent_wealth(obs, self.erc20_portfolio())
 
         PnL = profit_n_loss(current_w, init_w)
@@ -95,10 +89,10 @@ class UniswapV3PoolWealthAgent(UniswapV3Agent):
         echo_magenta(PnLP_HODL, "PnL_HODL %")
 
         sig(PnL, "PnL", obs)
-        sig(PnLP, "PnL_Percentage", obs)
+        sig(PnLP, "PnL Percentage", obs)
         sig(init_w,"initial_wealth",obs)
-        sig(PnLP_HODL,"PnL %",obs)
-        sig(PnL_HODL,"PnL HODL %",obs)
+        sig(PnLP_HODL,"PnL Percentage HODL",obs)
+        sig(PnL_HODL,"PnL HODL",obs)
         
         
         return  current_w #PnLP #obs.price(token="WETH",unit="USDC",pool="USDC/WETH-0.05")

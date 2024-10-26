@@ -58,6 +58,7 @@ def current_agent_wealth(obs, portfolio):
 #     return wealth
 
 def HODL_agent_wealth(obs, initial_portfolio):
+    echo('1')
         
     erc20_portfolio = removeETH(initial_portfolio)
     #echo_magenta(erc20_portfolio,"remov")
@@ -99,9 +100,15 @@ def HODL_profit_n_loss_percentage(HODL_current_wealth, initial_wealth):
 
 
 def weth_price(obs, pool):
-    out1 = obs.price('WETH','USDC','USDC/WETH-0.05')
+    echo('weth_price')
+    out1 = obs.price('WETH','USDC','USDC/WETH-0.3')
     echo_cyan(out1, "obs.price('WETH','UDSC',"+pool+")")
     return out1
 
 def pric(obs):
+    echo('pric')
     return weth_price(obs, obs.pools[0])
+
+
+
+

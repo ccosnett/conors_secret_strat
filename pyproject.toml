@@ -11,6 +11,8 @@ dojo-compass = "^3.4.6"
 google = "^3.0.0"
 pyperclip = "^1.9.0"
 colorama = "^0.4.6"
+ipykernel = "^6.29.5"
+pytest = "^8.3.3"
 
 
 [build-system]
